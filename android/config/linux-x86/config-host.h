@@ -14,4 +14,5 @@
 #define HOST_I386    1
 #define CONFIG_IOVEC 1
 #define CONFIG_LINUX   1
+#define CONFIG_POSIX 1
 #define CONFIG_ANDROID       1

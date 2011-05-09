@@ -460,6 +460,15 @@ echo "#define CONFIG_SLIRP    1" >> $config_h
 echo "#define CONFIG_SKINS    1" >> $config_h
 echo "#define CONFIG_TRACE    1" >> $config_h
 
+case "$TARGET_OS" in
+    windows)
+        echo "#define CONFIG_WIN32  1" >> $config_h
+        ;;
+    *)
+        echo "#define CONFIG_POSIX  1" >> $config_h
+        ;;
+esac
+
 # only Linux has fdatasync()
 case "$TARGET_OS" in
     linux-*)
