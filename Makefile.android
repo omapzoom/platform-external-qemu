@@ -153,13 +153,13 @@ start-emulator-library = \
 # Used with start-emulator-library
 end-emulator-library = \
     $(eval include $(BUILD_HOST_STATIC_LIBRARY)) \
-    $(eval EMULATOR_MODULE_TYPE := STATIC_LIBRARY)
+    $(eval EMULATOR_MODULE_TYPE := HOST_STATIC_LIBRARY)
 
 # A variant of start-emulator-library to start the definition of a host
 # program instead. Use with end-emulator-program
 start-emulator-program = \
     $(call start-emulator-library,$1) \
-    $(eval EMULATOR_MODULE_TYPE := EXECUTABLES)
+    $(eval EMULATOR_MODULE_TYPE := HOST_EXECUTABLES)
 
 # A varient of end-emulator-library for host programs instead
 end-emulator-program = \
