@@ -571,6 +571,30 @@ int send_all(int fd, const void *_buf, int len1)
 }
 #endif /* !_WIN32 */
 
+static CharDriverState *qemu_chr_open_android_modem(QemuOpts* opts)
+{
+    CharDriverState*  cs;
+    qemu_chr_open_charpipe( &cs, &android_modem_cs );
+    return cs;
+}
+static CharDriverState *qemu_chr_open_android_gps(QemuOpts* opts)
+{
+    CharDriverState*  cs;
+    qemu_chr_open_charpipe( &cs, &android_gps_cs );
+    return cs;
+}
+
+static CharDriverState *qemu_chr_open_android_kmsg(QemuOpts* opts)
+{
+    return android_kmsg_get_cs();
+}
+
+static CharDriverState *qemu_chr_open_android_qemud(QemuOpts* opts)
+{
+    return android_qemud_get_cs();
+}
+
+
 #ifndef _WIN32
 
 typedef struct {
@@ -716,29 +740,6 @@ static CharDriverState *qemu_chr_open_fdpair(QemuOpts* opts)
         return NULL;
 
     return qemu_chr_open_fd(fd_in, fd_out);
-}
-
-static CharDriverState *qemu_chr_open_android_modem(QemuOpts* opts)
-{
-    CharDriverState*  cs;
-    qemu_chr_open_charpipe( &cs, &android_modem_cs );
-    return cs;
-}
-static CharDriverState *qemu_chr_open_android_gps(QemuOpts* opts)
-{
-    CharDriverState*  cs;
-    qemu_chr_open_charpipe( &cs, &android_gps_cs );
-    return cs;
-}
-
-static CharDriverState *qemu_chr_open_android_kmsg(QemuOpts* opts)
-{
-    return android_kmsg_get_cs();
-}
-
-static CharDriverState *qemu_chr_open_android_qemud(QemuOpts* opts)
-{
-    return android_qemud_get_cs();
 }
 #endif /* CONFIG_ANDROID */
 
@@ -2565,7 +2566,9 @@ static const struct {
     { .name = "stdio",     .open = qemu_chr_open_stdio },
 #endif
 #ifdef CONFIG_ANDROID
+#ifndef _WIN32
     { .name = "fdpair",    .open = qemu_chr_open_fdpair },
+#endif
     { .name = "android-qemud", .open = qemu_chr_open_android_qemud },
     { .name = "android-kmsg",  .open = qemu_chr_open_android_kmsg },
     { .name = "android-modem", .open = qemu_chr_open_android_modem },
